@@ -1,12 +1,16 @@
 {
   "canisters": {
-    "utsp_protocol_backend": {
-      "main": "src/utsp_protocol_backend/main.mo",
+    "votingManager": {
+      "main": "src/utsp_protocol_backend/votingManager.mo",
+      "type": "motoko"
+    },
+    "tokenManager": {
+      "main": "src/utsp_protocol_backend/tokenManager.mo",
       "type": "motoko"
     },
     "utsp_protocol_frontend": {
       "dependencies": [
-        "utsp_protocol_backend"
+        "votingManager", "tokenManager"
       ],
       "source": [
         "src/utsp_protocol_frontend/dist"

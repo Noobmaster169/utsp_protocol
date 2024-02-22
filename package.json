@@ -14,5 +14,8 @@
   "type": "module",
   "workspaces": [
     "src/utsp_protocol_frontend"
-  ]
+  ],
+  "dependencies": {
+    "@dfinity/auth-client": "^0.15.7"
+  }
 }
