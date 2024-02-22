@@ -1,0 +1,26 @@
+{
+  "canisters": {
+    "utsp_protocol_backend": {
+      "main": "src/utsp_protocol_backend/main.mo",
+      "type": "motoko"
+    },
+    "utsp_protocol_frontend": {
+      "dependencies": [
+        "utsp_protocol_backend"
+      ],
+      "source": [
+        "src/utsp_protocol_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "utsp_protocol_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
