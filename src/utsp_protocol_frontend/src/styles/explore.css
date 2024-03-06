@@ -1,0 +1,86 @@
+
+
+
+body {
+    background: #DA4453;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #89216B, #DA4453);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #89216B, #DA4453); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    /*background-image: url(https://img.freepik.com/free-vector/background-with-dar-wave-concept_23-2148387248.jpg?w=740&t=st=1708312757~exp=1708313357~hmac=0d53f67dd2016314d7ebcf2cfb16768ff51991ce9a0e735df7def5f53b072ed8);*/
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+@media (max-width: 999px) {
+    .navbar-nav {
+        display: flex;
+        flex-direction: column;
+        z-index: 100;
+    }
+
+    .navigation-left, .navigation-right {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.explore-page-title {
+    font-family: rasa;
+    color: rgb(0, 0, 0);
+    font-weight: 700;
+    font-size: 2.5rem;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: -10px;
+}
+
+
+.explore-page-title-container {
+    border-bottom: 5px solid #da06e0;
+    padding: -100px;
+}
+
+.color-white {
+    color: white;
+}
+
+.voting-container {
+    height: 300px;
+    width: 260px;
+    background-color: #dddddd;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: black;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 3vh;
+    padding: 10px;
+    padding-top: 3vh;
+    margin-top: 0;
+    text-align: center;
+    overflow: hidden;
+}
+
+.explore-content-container {
+    padding: 5vh;
+    justify-content: center;
+}
+
+.voting-container img {
+    height: 200px;
+    width: 200px;
+}
+
+.voting-title {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-top: .5rem;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}

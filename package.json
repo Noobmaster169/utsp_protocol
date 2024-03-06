@@ -17,5 +17,8 @@
   ],
   "dependencies": {
     "@dfinity/auth-client": "^0.15.7"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
   }
 }

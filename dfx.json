@@ -13,7 +13,8 @@
         "votingManager", "tokenManager"
       ],
       "source": [
-        "src/utsp_protocol_frontend/dist"
+        "src/utsp_protocol_frontend/dist",
+        "src/utsp_protocol_frontend/src/resources"
       ],
       "type": "assets",
       "workspace": "utsp_protocol_frontend"

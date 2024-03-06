@@ -53,28 +53,6 @@ actor{
     let options   : TrieMap<Nat, TrieMap<Nat, Nat>> = TrieMap.TrieMap<Nat, TrieMap<Nat, Nat>>(Nat.equal, Hash.hash);
     let results   : TrieMap<Nat, Text> = TrieMap.TrieMap<Nat, Text>(Nat.equal, Hash.hash);
     let MINIMUM_OPTIONS:Nat = 2;
-
-    //Example of Testing Functions
-    public shared query func greet(name: Text): async Text{
-      return "Hello"#name;
-    };
-    public shared({caller}) func whoAmI(): async Principal{
-      return caller;
-    };
-    public shared query func testNumber(): async Nat{
-      let number: Nat = 10;
-      return number;
-    };
-    public shared query func testNumberInput(number: Nat): async Bool{
-      return true;
-    };
-    public shared query func testObject() : async Option{
-      let testOption : Option = {
-        title = "Title";
-        image = "Image Link";
-      };
-      return testOption;
-    };
     
     /////////////////////
     //PRIVATE FUNCTIONS//

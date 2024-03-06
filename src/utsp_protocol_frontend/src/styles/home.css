@@ -1,0 +1,352 @@
+
+
+
+#landing-page-1 {
+    background-image: url('../assets/home_bg.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+header {
+    opacity: 0.92;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navigation-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.navigation-left {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.navigation-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+@media (max-width: 999px) {
+    .navbar-nav {
+        display: flex;
+        flex-direction: column;
+        z-index: 100;
+    }
+
+    .navigation-left, .navigation-right {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+#landing-parent {
+    width: 90vw;
+    height: auto;
+    margin-left: 7vw;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+#landing-parent .region-1 {
+    width: 55%;
+    margin-top: 5vh;
+}
+
+#landing-parent .region-2 {
+    width: 40%;
+}
+
+#landing-parent .region-3 {
+    img {
+        width: 60%;
+    }
+}
+
+#landing-parent .region-4 {
+    font-family: arial;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    color: white;
+    font-weight: 600;
+    margin-top: 0;
+}
+
+#landing-parent .region-5 {
+    line-height: clamp(2.5rem, 6vw, 4.5rem);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    color: white;
+    font-weight: 650;
+    margin-bottom: 3vh;
+}
+
+#landing-parent .region-6 button {
+    background-color: #d766ae;
+    border-radius: 20px;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    color: white;
+    border: none;
+}
+
+
+.landing-page-wave {
+    position: relative;
+    bottom: -1px;
+    z-index: 2;
+    width: 100%;
+}
+
+#landing-page-2 {
+    z-index: 3;
+    background-color: #f5f5f5;
+}
+
+#landing-page-2 .title-2 {
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    line-height: clamp(2.2rem, 5vw, 3.5rem);
+    color: black;
+    font-family: roboto;
+    font-weight: 600;
+    padding-right: 10vw;
+    margin-left: 2vw;
+}
+
+.landing-page-content-container {
+    width: 90vw;
+    margin: auto;
+}
+
+.landing-feature-container {
+    width: 350px;
+    height: 400px;
+    background-color: white;
+    margin-top: 3vh;
+    border-radius: 16px;
+    border: 4px solid #d1d1d1;
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    text-align: center;
+    margin: 1rem;
+}
+
+#landing-feature-container-parent {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.feature-icon-image {
+    width: 150px;
+    height: 150px;
+}
+
+.landing-feature-title {
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 2rem;
+}
+
+.landing-feature-description-1 {
+    margin-top: 3rem;
+    font-weight: 500;
+}
+
+.landing-feature-description-2 {
+    margin-top: 1rem;
+    font-weight: 500;
+}
+
+@media (max-width: 777px) {
+    #landing-page-2 .title-2 {
+        text-align: center;
+    }
+}
+
+#landing-page-3 {
+    z-index: 3;
+    background-color: #B02D99;
+}
+
+.landing-page-3-title {
+    font-size: clamp(2.2rem, 4vw, 3rem);
+    font-family: arial;
+    color: white;
+    text-align: center;
+    font-weight: 600;
+}
+
+#landing-product-parent-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.landing-product-container {
+    width: 330px;
+    min-height: 350px;
+    border-radius: 16px;
+    margin-top: 3vh;
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    text-align: center;
+    background-color: #FBE2FF;
+}
+
+.product-image {
+    width: 90%;
+}
+
+.product-title {
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 2rem;
+}
+
+.product-description {
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+}
+
+.product-image-container {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-title-1 {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.product-title-2 {
+    margin-bottom: 1rem;
+}
+
+#landing-page-4 {
+    z-index: 3;
+    background-color: #F6F6F6;
+}
+
+#landing-page-4 .region-1, .region-2 {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#landing-page-4 .region-3 {
+    width: 35%;
+    margin-right: 5vw;
+}
+
+#landing-page-4 img {
+    width: 100%;
+}
+
+#landing-page-4 .region-5 {
+    width: 30%;
+    margin-top: 5vh;
+}
+
+#landing-page-4 .region-6, .region-4 {
+    margin-top: 8vw;
+}
+
+#landing-page-4 .region-6 {
+    margin-bottom: 20vh;
+}
+
+.landing-faq-title {
+    font-family: arial;
+    font-size: clamp(2.2rem, 4vw, 3rem);
+    line-height: clamp(2.2rem, 4vw, 3rem);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 1200px) {
+    #landing-page-4 .region-6, .region-4 {
+        margin-top: 4vw;
+    }
+}
+
+@media (max-width: 1000px) {
+    #landing-page-4 {
+        .region-3, .region-5 {
+            display: none;
+        }
+        .region-4, .region-6 {
+            width: 100%;
+        }
+
+        .region-4 {
+            margin: 0;
+        }
+
+        .region-6 {
+            margin-top: 4rem;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    #landing-parent .region-1 {
+        width: 90%;
+    }
+
+    #landing-parent .region-2 {
+        width: 100%;
+        display: none;
+    }
+
+    #landing-parent {
+        flex-direction: column;
+        height: fit-content;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
+    }
+
+    #landing-parent .region-6 {
+        display: flex;
+        justify-content: center;
+    }
+
+    #landing-parent .region-5 {
+        text-align: center;
+    }
+
+    #landing-parent .region-4 {
+        text-align: center;
+    }
+    #landing-parent .region-3 {
+        display: flex;
+        justify-content: center;
+        img {
+            width: 80%;
+        }
+    }
+    #landing-page-2 .title-2 {
+        padding-right: 0;
+        text-align: center;
+        margin-left: 0;
+    }
+}
