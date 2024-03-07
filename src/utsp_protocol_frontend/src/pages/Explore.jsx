@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import '../styles/explore.css';
 import Cat from '../assets/Cat.jpg';
+import Voting from '../assets/voting.png';
+import Add from '../assets/add.png';
 import { votingManager } from '../../../declarations/votingManager';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,18 +28,26 @@ export default function Explore(){
     
     const handleVotePage = (VoteID) => {
         navigate('/voting', {state: {VoteID}});
-    }
+    };
+
+    const createNewVote = () => {
+        navigate('/create', {state:""});
+    };
 
     const votesList = votes.map((vote) => 
         <div class="voting-container" onClick={() => handleVotePage(vote.id)}>
             {vote.image==''?
-            <img src={Cat}/>
+            <img src={Voting}/>
             :
             <img src={vote.image}/>
             }
             <div class="voting-title">{vote.title}</div>
         </div>
     )
+    const addVoting = <div class="voting-container" onClick={createNewVote}>
+                        <img src={Add}/>
+                        <div class="voting-title">Create New Voting</div>
+                    </div>
 
     return(
         <div>
@@ -50,6 +60,7 @@ export default function Explore(){
             </div>
             <div class="explore-content-container d-flex flex-wrap">
                 {votesList}
+                {addVoting}
             </div>
         </div>
     )

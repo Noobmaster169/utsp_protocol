@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 import '../styles/create.css';
 import { useState } from 'react';
-import { votingManager } from '../../../declarations/votingManager';
+import { generatePath, useNavigate } from 'react-router-dom';
 
-export default function Create(){
 
+export default function Create({votingManager}){
+
+    const navigate = useNavigate();
     const [displayActive,setDisplayActive] = useState(false);
     const [optionActive,setOptionActive] = useState(false);
     const [statusActive,setStatusActive] = useState(false);
@@ -12,35 +14,54 @@ export default function Create(){
     const [optCnt,setOptCnt] = useState(1);
     const [optionList,setOptionList] = useState([]);
 
+    function generateRandomID(){
+        return parseInt(Math.floor(Math.random() * Math.pow(2, 32)));
+    };
     
-    async function updateDisplay(formData){
+    async function createVoting(formData){
         try{
-            const voteID = 123;
-            const voteTitle = formData.get('title');
+            const createButton = document.getElementById("createButton");
+            createButton.setAttribute("disabled", true);
+            
+            const voteID = parseInt(generateRandomID());
+            const voteTitle = formData.get('title').toUpperCase();
             const voteDesc = formData.get('desc');
-            const voteImg = formData.get('img');
-            console.log(voteID,voteTitle,voteDesc,voteImg.name);
-            const messageCreate = await votingManager.createVoting(voteID);
-            // const messageUpdate = await votingManager.updateVoteData(voteID,voteTitle,voteDesc,voteImg);
-            console.log(messageCreate);
+            //const voteImg = formData.get('img');
+            const voteImg = "";
+
+            const message = await votingManager.createVoting(voteID);
+            if (message != "SUCCESS"){
+                alert(message);
+                createButton.removeAttribute("disabled");
+                return false;
+            }
+            const messageUpdate = await votingManager.updateVoteData(voteID,voteTitle,voteDesc,voteImg);
+            if (messageUpdate != "SUCCESS"){
+                alert(messageUpdate);
+                createButton.removeAttribute("disabled");
+                return false;
+            }
+            createButton.removeAttribute("disabled");
+            console.log("Navigating to", voteID);
+
+            const VoteID = voteID;
+            navigate('/voting', {state: {VoteID}});   
         }catch(e){
             console.log(e);
         }
     }
 
-    async function updateOption(formData){
+    async function updateDisplay(formData){
         try{
             const voteID = 123;
-            const optNames = [];
-            const optImgs = [];
-            for(let i=1;i<=optCnt;i++){
-                if(formData.get('optName'+i)){
-                    optNames.push(formData.get('optName'+i));
-                    optImgs.push(formData.get('optImg'+i));
-                }
-            }
-            const message = await votingManager.updateOptionData(voteID,optNames,optImgs);
-            console.log(message);
+            const voteTitle = formData.get('title');
+            const voteDesc = formData.get('desc');
+            //const voteImg = formData.get('img');
+            const voteImg = "";
+            console.log(voteID,voteTitle,voteDesc,voteImg.name);
+            const messageCreate = await votingManager.createVoting(voteID);
+            // const messageUpdate = await votingManager.updateVoteData(voteID,voteTitle,voteDesc,voteImg);
+            console.log(messageCreate);
         }catch(e){
             console.log(e);
         }
@@ -147,7 +168,7 @@ export default function Create(){
         <div>
             <div class="setting-vote-content-container">
                 <div class="vote-setting-page-title">
-                    <span>Voting Settings</span>
+                    <span>Create Voting</span>
                 </div>
                 <div class="setting-container">
                     <div id="display-form" class="setting-form">
@@ -157,7 +178,7 @@ export default function Create(){
                         </div>
                         <form onSubmit={(e) => {
                             e.preventDefault();
-                            updateDisplay(new FormData(e.target));
+                            createVoting(new FormData(e.target));
                         }}>
                             <div class="form-content" id="display-content-form">
                                 <div class="form-input-container display-first-input">
@@ -166,7 +187,7 @@ export default function Create(){
                                 </div>
                                 <div class="form-input-container">
                                     <label for="display-desc-input">Description</label>
-                                    <textarea id="display-desc-input" name='desc'>Lorem ipsum dolor sit amet. </textarea>
+                                    <textarea id="display-desc-input" name='desc'></textarea>
                                 </div>
                                 <div class="form-input-container">
                                     <label for="display-image-input">Image</label>
@@ -178,45 +199,11 @@ export default function Create(){
                                 </div>
                                 <div class="form-input-container">
                                     <div class="flex-end">
-                                        <button class="btn btn-primary" type='submit'>Save</button>
+                                        <button class="btn btn-primary" id="createButton" type='submit'>Save</button>
                                     </div>
                                 </div>
                             </div>
                         </form>
-                    </div>
-                    <div id="option-form" class="setting-form">
-                        <div id="option-form-header" class="header-form" onClick={() => optionActive ? reduce_form('option') : extend_form('option')}>
-                            <span><i class="fa-solid fa-chevron-down"></i></span>
-                            Options
-                        </div>
-                        <form onSubmit={(e) => {
-                            e.preventDefault();
-                            updateOption(new FormData(e.target));
-                        }}>
-                            <div id="option-content-form" class="form-content">
-                                <div id="option-parent-container">
-                                    {optionList}
-                                </div>
-                                <button type='button' class="btn btn-primary" onClick={() => add_option()}>Add Option</button>
-                                <div class="form-input-container">
-                                    <div class="flex-end">
-                                        <button class="blue-button" type='submit'>Save</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div id="status-form" class="setting-form">
-                        <div id="status-form-header" class="header-form" onClick={() => statusActive ? reduce_form('status') : extend_form('status')}>
-                            <span><i class="fa-solid fa-chevron-down"></i></span>
-                            Status
-                        </div>
-                    </div>
-                    <div id="token-form" class="setting-form">
-                        <div id="token-form-header" class="header-form" onClick={() => tokenActive ? reduce_form('token') : extend_form('token')}>
-                            <span><i class="fa-solid fa-chevron-down"></i></span>
-                            Token
-                        </div>
                     </div>
                 </div>
             </div>

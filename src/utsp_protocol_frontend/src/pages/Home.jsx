@@ -10,9 +10,16 @@ import img6 from '../assets/home6.png';
 import img7 from '../assets/home7.png';
 import img8 from '../assets/home8.png';
 import img9 from '../assets/home9.png';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home(){
     const {isAuthenticated, login, logout, votingManager, tokenManager} = useAuth();
+    const navigate = useNavigate();
+
+    function explore(){
+        console.log("Navigating to Explore Page");
+        navigate('/explore', {state: "hello"});
+    };
 
     return (
         <div>
@@ -27,7 +34,7 @@ export default function Home(){
                         </div>
                         <div class="region-5">UTSP Protocol</div>
                         <div class="region-6">
-                            <button>Explore Now</button>
+                            <button onClick={explore}>Explore Now</button>
                         </div>
                     </div>
                     <div class="region-2">
@@ -89,7 +96,7 @@ export default function Home(){
                             <div class="product-image-container mx-auto mb-2">
                                 <img class="product-image mx-auto" src={img6}/>
                             </div>
-                            <div class="product-description">Create 3 Voting for Free</div>
+                            <div class="product-description">Create 2 Voting for Free</div>
                         </div>
                         <div class="landing-product-container">
                             <div class="product-title product-title-1">
@@ -126,10 +133,10 @@ export default function Home(){
                                 What is UTSP Protocol?
                             </div>
                             <div class="landing-faq-description-1 mb-2">
-                                Universal Token-Standardized Polling (UTSP) Protocol is a secure third party that provides High Integrity & High Security Voting System.
+                                Universal Token-Standardized Polling (UTSP) Protocol is A Secure Third Party that Provides High Integrity & High Security Voting System.
                             </div>
                             <div>
-                                This Protocol is built on ICP and uses Internet Identity as well as DIP721 Token Standard Interfacesto identify the voting participants.
+                                This Protocol is built on ICP that uses Internet Computer Token Standard to Identify and Verify the Voting Participants.
                             </div>
                         </div>
                     </div>
@@ -139,10 +146,10 @@ export default function Home(){
                                 Internet Computer Token Standard
                             </div>
                             <div class="landing-faq-description-1 mb-2">
-                                Universal Token-Standardized Polling (UTSP) Protocol is a secure third party that provides High Integrity & High Security Voting System.
+                                UTSP Protocol use a Built Token on Internet Computer to Create Digital Blockchain-Based Voting.
                             </div>
                             <div>
-                                This Protocol is built on ICP and uses Internet Identity as well as DIP721 Token Standard Interfacesto identify the voting participants.
+                                By Integrating the Token Interface, Voting Creators could Create & Manage The Token & its Holders. Hence, the Token Could be Used to Create Voting Sessions.
                             </div>
                         </div>
                         <div class="region-5">

@@ -51,6 +51,8 @@ header {
     margin-left: 7vw;
     justify-content: space-between;
     flex-direction: row;
+    padding-top: 80px;
+    padding-bottom: 50px;
 }
 
 #landing-parent .region-1 {
@@ -116,7 +118,8 @@ header {
     font-family: roboto;
     font-weight: 600;
     padding-right: 10vw;
-    margin-left: 2vw;
+    margin-bottom: 20px;
+    margin-left: 4vw;
 }
 
 .landing-page-content-container {
@@ -159,7 +162,7 @@ header {
 }
 
 .landing-feature-description-1 {
-    margin-top: 3rem;
+    margin-top: 1rem;
     font-weight: 500;
 }
 
@@ -217,9 +220,10 @@ header {
 }
 
 .product-description {
-    font-weight: 700;
-    font-size: 1.5rem;
+    font-weight: 500;
+    font-size: 1.25rem;
     line-height: 1.5rem;
+    margin-top: 10px;
 }
 
 .product-image-container {

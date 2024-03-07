@@ -56,8 +56,8 @@ export const useAuth= () => {
         isAuthenticated, //(Bool)User Has Login or Not
         login,           //Function for Logging In
         logout,          //Function for Logging Out
-        authClient,      //Auth Client (probably won't be used when exported)
-        identity,        //Internet Identity of the User  (se jg blm tau display kek bemana)
+        authClient,      //Auth Client
+        identity,        //Internet Identity of the User
         votingManager,   //Voting Manager Backend
         tokenManager,    //Token  Manager Backend
     };

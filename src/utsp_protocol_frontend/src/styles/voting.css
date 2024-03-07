@@ -47,9 +47,19 @@ body {
     text-align: center;
 }
 
+.title-image{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
+.title-image img{
+    width: 200px;
+    height: 200px;
+}
 
-.vote-container {
+.vote-container, .result-container-parent {
     width: 100%;
     display: flex;
     justify-content: space-around;
@@ -184,7 +194,7 @@ input:checked + label {
     /*background: #B24592;  /* fallback for old browsers */
     /*background: -webkit-linear-gradient(to right, #F15F79, #B24592);  /* Chrome 10-25, Safari 5.1-6 */
     /*background: linear-gradient(to right, #F15F79, #B24592); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background-color: rgb(253, 203, 254);
+    background-color: rgb(233, 233, 233);
     border-radius: 8px;
     width: 80vw;
     color: black;
@@ -210,4 +220,35 @@ input:checked + label {
 .status-text {
     font-size: 1.2rem;
     font-weight: 648;
+}
+
+.notification-text{
+    color: white;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.result-container {
+    background-color: white;
+    padding: 10px;
+    width: 330px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 3vh;
+}
+
+.result-percent {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.result-status {
+    width: fit-content;
+    background-color: aliceblue;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 1.2rem;
 }

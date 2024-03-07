@@ -476,4 +476,15 @@ actor{
             case (null)        {return false;};
         };
     };
+
+    /** Function To Check If User Owns A Voting */
+    public shared({caller}) func isOwner(id:Nat): async Bool{
+        let checkVoting = votings.get(id);
+        switch(checkVoting){
+            case (null)        {return false;};
+            case (?voting){
+                return voting.creator == Principal.toText(caller);
+            };
+        };
+    };
 };

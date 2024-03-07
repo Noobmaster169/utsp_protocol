@@ -1,20 +1,29 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import '../styles/voting.css';
+import votingImg from '../assets/voting.png';
 import cat from '../assets/Cat.jpg';
 import siren from '../assets/siren.png';
-import { votingManager } from '../../../declarations/votingManager';
-import { useEffect } from 'react';
-import { tokenManager } from '../../../declarations/tokenManager';
+import { useNavigate } from 'react-router-dom';
+//import { votingManager } from '../../../declarations/votingManager';
+//import { tokenManager } from '../../../declarations/tokenManager';
+//import {useAuth} from '../useAuth';
 
 
-export default function Voting(){
-
+export default function Voting({isAuthenticated, votingManager, tokenManager}){
+    
+    const navigate = useNavigate();
     const { state } = useLocation();
+    const location = useLocation();
+    console.log("Consoling Location")
+    console.log(location)
+    console.log("Consoling State")
+    console.log(state)
     const { VoteID } = state || {};
     let ID = parseInt(VoteID);
-    console.log(ID);
+    console.log("Exploring Vote with ID:", ID);
 
     const [voteData, setVoteData] = useState({
         canister: null,
@@ -32,7 +41,12 @@ export default function Voting(){
     const [votingStatus, setVotingStatus] = useState();
     const [logs, setLogs] = useState([]);
     const [tokenHolders,setTokenHolders] = useState([]);
+    const [isOwner, setIsOwner] = useState(false);
 
+    function openSettings(){
+        navigate('/settings', {state: {VoteID}})
+    }    
+    
     useEffect(() => {
         async function getVoteData(ID){
             try {
@@ -50,9 +64,14 @@ export default function Voting(){
                     tokenSupply: "Token not Defined",
                     tokenName: "Token not Defined",
                 };
+
+                const isOwner = await votingManager.isOwner(ID);
+                setIsOwner(isOwner);
                 setVoteData(modifiedData);
             } catch (error){
                 console.error("Error getting data:", error);
+                alert("Invalid Voting");
+                navigate('/explore', {state: {VoteID}})
             }
         }
 
@@ -79,7 +98,7 @@ export default function Voting(){
             <input type="radio" name="pilihan" id={"pilihan-"+(index+1)}/>
             <label for={"pilihan-"+(index+1)}>
                 <div class="option-label-div">
-                    <img src={option.image} class="mt-2 vote-photo"/>
+                    <img src={cat} class="mt-2 vote-photo"/>
                     <div class="vote-name">
                         {option.title}
                     </div>
@@ -87,6 +106,7 @@ export default function Voting(){
             </label>
         </div>
     ) : (<h2>No Options</h2>);
+    console.log("Voting Options:", votingOptions)
 
     useEffect(() => {
         async function getLogs(ID){
@@ -104,7 +124,6 @@ export default function Voting(){
                     const minutes = date.getMinutes();
                     const seconds = date.getSeconds();
 
-                    // You can format the date string as per your requirement
                     const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                     data[index] = splitted[0] + ' ' + formattedDate;
                 });
@@ -136,7 +155,7 @@ export default function Voting(){
         getTokenHolders(ID);
     }, [ID]);
 
-    const tokenList = tokenHolders.map((token, index) =>
+    let tokenList = tokenHolders.map((token, index) =>
         <tr>
             <th scope='row'>{index}</th>
             <td>{token}</td>
@@ -152,6 +171,9 @@ export default function Voting(){
                 <div class="title-desc-div mb-4">
                     <div class="page-title">
                         {voteData.title}
+                    </div>
+                    <div class="title-image">
+                        <img src={votingImg}/>
                     </div>
                     <div class="title-desc mb-2">
                         {voteData.desc}
@@ -183,6 +205,7 @@ export default function Voting(){
                         <div class="status-text mx-1">Status: {votingStatus}</div>
                     </div>
                 </div>
+                {isOwner ? <button onClick={openSettings}>Voting Settings</button>: ""}
                 <div class="option-bar mt-2 mb-2">
                     <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -194,11 +217,14 @@ export default function Voting(){
                         <li class="nav-item" role="presentation">
                             <button class="nav-link tab-pane-button" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Token Holders</button>
                         </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link tab-pane-button" id="results-tab" data-bs-toggle="tab" data-bs-target="#results-tab-pane" type="button" role="tab" aria-controls="results-tab-pane" aria-selected="false">Results</button>
+                        </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
                             <div class="vote-container">
-                                {voteData.options ? votingOptions : 
+                                {voteData.options? votingOptions : 
                                     <h2>No Options have been created</h2>
                                 }
                             </div>
@@ -219,18 +245,53 @@ export default function Voting(){
                             </table>    
                         </div>
                         <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
-                            <table class="table table-hover table-dark">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Token ID</th>
-                                        <th scope="col">Holder</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {tokenList}
-                                </tbody>
-                            </table>
+                            {tokenList.length == 0 ? 
+                                <h1 class="notification-text">Token Holder Not Detected</h1>:
+                                <table class="table table-hover table-dark">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Token ID</th>
+                                            <th scope="col">Holder</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {tokenList}
+                                    </tbody>
+                                </table>
+                            }
                         </div>
+                        
+                        <div class="tab-pane fade" id="results-tab-pane" role="tabpanel" aria-labelledby="results-tab" tabindex="0">
+                            <div class="result-container-parent">
+                                <div class="result-container">
+                                    <img src={cat} class="mt-2 vote-photo"/>
+                                    <div class="vote-name">
+                                        Chitler
+                                    </div>
+                                    <div class="result-percent">50%</div>
+                                </div>
+                                <div class="result-container">
+                                    <img src={cat} class="mt-2 vote-photo"/>
+                                    <div class="vote-name">
+                                        Chitler
+                                    </div>
+                                    <div class="result-percent">50%</div>
+                                </div>
+                                <div class="result-container">
+                                    <img src={cat} class="mt-2 vote-photo"/>
+                                    <div class="vote-name">
+                                        Chitler
+                                    </div>
+                                    <div class="result-percent">50%</div>
+                                </div>
+                            </div>
+                            <div class="result-status mx-auto mt-5">
+                                <i class="fa-solid fa-bullhorn mx-2"></i>
+                                Voting Ended. 50% of the participants voted for Chitler
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
