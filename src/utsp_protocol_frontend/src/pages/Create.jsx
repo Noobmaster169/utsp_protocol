@@ -13,7 +13,11 @@ export default function Create({votingManager}){
     const [tokenActive,setTokenActive] = useState(false);
     const [optCnt,setOptCnt] = useState(1);
     const [optionList,setOptionList] = useState([]);
-
+    
+    useEffect(()=>{
+        extend_form('display');
+    }, [])
+    
     function generateRandomID(){
         return parseInt(Math.floor(Math.random() * Math.pow(2, 32)));
     };
@@ -46,22 +50,6 @@ export default function Create({votingManager}){
 
             const VoteID = voteID;
             navigate('/voting', {state: {VoteID}});   
-        }catch(e){
-            console.log(e);
-        }
-    }
-
-    async function updateDisplay(formData){
-        try{
-            const voteID = 123;
-            const voteTitle = formData.get('title');
-            const voteDesc = formData.get('desc');
-            //const voteImg = formData.get('img');
-            const voteImg = "";
-            console.log(voteID,voteTitle,voteDesc,voteImg.name);
-            const messageCreate = await votingManager.createVoting(voteID);
-            // const messageUpdate = await votingManager.updateVoteData(voteID,voteTitle,voteDesc,voteImg);
-            console.log(messageCreate);
         }catch(e){
             console.log(e);
         }
@@ -154,14 +142,6 @@ export default function Create({votingManager}){
                 </div>
             </div>
         );
-    }
-
-    const add_option = () => {
-        let option_parent_container = document.querySelector('#option-parent-container');
-        let option_content = document.querySelector('#option-content-form');
-        setOptCnt(optCnt+1);
-        setOptionList(optionList.concat(<DelButton/>));
-        option_content.style.maxHeight = (option_content.scrollHeight+274) + "px";
     }
     
     return (

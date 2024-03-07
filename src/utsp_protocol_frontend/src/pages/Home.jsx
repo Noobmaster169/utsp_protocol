@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import { useAuth } from '../useAuth';
 import '../styles/home.css';
 import img1 from '../assets/home1.png';
 import img2 from '../assets/home2.svg';
@@ -13,13 +11,15 @@ import img9 from '../assets/home9.png';
 import { useNavigate } from 'react-router-dom';
 
 export default function Home(){
-    const {isAuthenticated, login, logout, votingManager, tokenManager} = useAuth();
     const navigate = useNavigate();
 
     function explore(){
-        console.log("Navigating to Explore Page");
         navigate('/explore', {state: "hello"});
     };
+
+    function createVote(){
+        navigate('/create');
+    }
 
     return (
         <div>
@@ -89,7 +89,7 @@ export default function Home(){
                         Try Our Freemium Product!
                     </div>
                     <div id="landing-product-parent-container">
-                        <div class="landing-product-container">
+                        <div class="landing-product-container" onClick={createVote}>
                             <div class="product-title product-title-1">
                                 Free Session
                             </div>
@@ -98,7 +98,7 @@ export default function Home(){
                             </div>
                             <div class="product-description">Create 2 Voting for Free</div>
                         </div>
-                        <div class="landing-product-container">
+                        <div class="landing-product-container" onClick={createVote}>
                             <div class="product-title product-title-1">
                                 Paid Session
                             </div>
@@ -107,7 +107,7 @@ export default function Home(){
                             </div>
                             <div class="product-description">0.2 ICP per Voting Session</div>
                         </div>
-                        <div class="landing-product-container">
+                        <div class="landing-product-container" onClick={createVote}>
                             <div class="product-title product-title-2">
                                 Contact Us For Verification Service
                             </div>

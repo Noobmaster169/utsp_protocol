@@ -167,6 +167,7 @@ input:checked + label {
     border-top: none;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
+    margin-bottom: 30px;
     padding: 20px;
 }
 
@@ -225,7 +226,10 @@ input:checked + label {
 .notification-text{
     color: white;
     text-align: center;
-    margin-top: 15px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    text-decoration: underline;
+    font-size: 1rem;
 }
 
 .result-container {

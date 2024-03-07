@@ -17,10 +17,7 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
     const navigate = useNavigate();
     const { state } = useLocation();
     const location = useLocation();
-    console.log("Consoling Location")
-    console.log(location)
-    console.log("Consoling State")
-    console.log(state)
+    
     const { VoteID } = state || {};
     let ID = parseInt(VoteID);
     console.log("Exploring Vote with ID:", ID);
@@ -34,26 +31,66 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
         statusObj: null,
         voteStatus: null,
         options: null,
+    });
+    const [tokenStatus, setTokenStatus] = useState({
         tokenSupply: null,
         tokenName: null,
-    });
+    })
 
     const [votingStatus, setVotingStatus] = useState();
     const [logs, setLogs] = useState([]);
     const [tokenHolders,setTokenHolders] = useState([]);
     const [isOwner, setIsOwner] = useState(false);
+    const [result, setResult] = useState([]);
+    const [resultMessage, setResultMessage] = useState("");
 
     function openSettings(){
         navigate('/settings', {state: {VoteID}})
-    }    
+    } 
+    
+    async function selectVote(){
+        console.log("Selecting Vote")
+        const voteButton = document.getElementById("voteButton");
+        voteButton.setAttribute("disabled", true);
+        try{  
+            const message = await votingManager.addVote(ID, 0);
+            if(message != "SUCCESS"){
+                alert(message);
+            }
+            console.log(message);
+        }catch(e){
+            alert(e);
+            console.log(e);
+        }
+        voteButton.removeAttribute("disabled")
+    }
     
     useEffect(() => {
+        async function getTokenStatus(canister){
+            if(!canister){return false};
+            try{
+                const status = await tokenManager.getStatus(canister).catch(()=>{
+                    alert("Error Connecting to canister")
+                })
+                console.log("Token Status: ", status)
+                if(status){
+                    const token_data = status.split(",");
+                    console.log(token_data);
+                    setTokenStatus({
+                        tokenSupply: token_data[0],
+                        tokenName: `${token_data[1]} ($${token_data[2]})`,
+                    })
+                }
+            }catch(e){
+                console.log(e);
+            }
+        }
         async function getVoteData(ID){
             try {
                 const result = await  votingManager.getVoting(ID);
                 const data = result[0];
                 const modifiedData = {
-                    canister: (data.tokenCanister.length === 0) ? "Not Defined":data.tokenCanister,
+                    canister: (data.tokenCanister.length === 0) ? "":data.tokenCanister,
                     title: data.title,
                     desc: data.desc,
                     image: data.image,
@@ -61,24 +98,20 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
                     statusObj: data.status,
                     voteStatus: Object.keys(data.status)[0].toString(),
                     options: data.optionData,
-                    tokenSupply: "Token not Defined",
-                    tokenName: "Token not Defined",
                 };
 
                 const isOwner = await votingManager.isOwner(ID);
                 setIsOwner(isOwner);
                 setVoteData(modifiedData);
+                if(modifiedData.canister){
+                    getTokenStatus(modifiedData.canister[0]);   
+                }
             } catch (error){
                 console.error("Error getting data:", error);
                 alert("Invalid Voting");
                 navigate('/explore', {state: {VoteID}})
             }
         }
-
-        getVoteData(ID);
-    }, [ID]);
-
-    useEffect(() => {
         async function getVotingStatus(ID){
             try{
                 const result = await votingManager.getVotingStatus(ID);
@@ -87,8 +120,8 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
                 console.log(e);
             }
         }
-
         getVotingStatus(ID);
+        getVoteData(ID);
     }, [ID]);
 
     const votingOptions = 
@@ -136,11 +169,25 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
         getLogs(ID);
     }, [ID]);
 
+    useEffect(()=>{
+        async function getHolders(canister){
+            if(!canister){return false};
+            try{
+                const holders = await tokenManager.getTokenOwners(canister[0])
+                console.log(holders);
+                setTokenHolders(holders);
+            }catch(e){
+
+            }
+        }
+        getHolders(voteData.canister);
+    }, [ID]);
+
     const logList = logs.map((log) => 
         <tr>
             <td>{log}</td>
         </tr>
-    )
+    );
 
     useEffect(() => {
         async function getTokenHolders(ID){
@@ -162,6 +209,54 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
         </tr>
     )
 
+    useEffect(()=>{
+        async function getVoteResult(ID){
+            try{
+                const resultDisplays = [];
+                const results = await votingManager.getResult(ID)
+                console.log("Canister Result:", results);
+                console.log(results);
+                if(results.length === 0){
+                    voteData.options.forEach((option, index) => {
+                        resultDisplays.push(
+                            <div class="result-container">
+                                <img src={cat} class="mt-2 vote-photo"/>
+                                <div class="vote-name">
+                                    {option.title}
+                                </div>
+                                <div class="result-percent">??</div>
+                            </div>
+                        )
+                    })
+                }else{
+                    const result_scores = results.split(",").slice(1);
+                    console.log("Splitted:", result_scores);
+                    const total_scores = result_scores.reduce((acc, currentValue) => acc + parseInt(currentValue), 0);
+                    console.log("Total:", total_scores);
+                    const result_percents = result_scores.map((score)=> parseInt(parseInt(score)/total_scores*100))
+                    console.log("Percents:", result_percents)
+                    
+                    voteData.options.forEach((option, index) => {
+                        resultDisplays.push(
+                            <div class="result-container">
+                                <img src={cat} class="mt-2 vote-photo"/>
+                                <div class="vote-name">
+                                    {option.title}
+                                </div>
+                                <div class="result-percent">{result_percents[index]}%</div>
+                            </div>
+                        )
+                    })  
+                    setResultMessage("Voting Has Ended. Chitler got 50% of the votes")
+                }
+                setResult(resultDisplays);
+            }catch(e){
+                console.log(e);
+            }
+        }
+        getVoteResult(ID);
+    }, [ID])
+
     // const voteDisplay = search(ID);
     console.log(voteData);
 
@@ -181,8 +276,8 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
                     <div class="d-flex flex-row justify-content-center title-addtional-info">
                         <div class="d-flex flex-column">
                             <div>Token Canister</div>
-                            <div>Token Supply</div>
                             <div>Token Name</div>
+                            <div>Token Supply</div>
                         </div>
                         <div class="d-flex flex-column mx-1">
                             <div>:</div>
@@ -190,9 +285,9 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
                             <div>:</div>
                         </div>
                         <div class="d-flex flex-column">
-                            <div>{voteData.canister}</div>
-                            <div>{voteData.tokenSupply}</div>
-                            <div>{voteData.tokenName}</div>
+                            <div>{voteData.canister ? voteData.canister : "Not Found"}</div>
+                            <div>{tokenStatus.tokenName ? tokenStatus.tokenName : "Not Found"}</div>
+                            <div>{tokenStatus.tokenSupply? tokenStatus.tokenSupply : "Not Found"}</div>
                         </div>
                     </div>
                     <div class="status">
@@ -223,15 +318,22 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
-                            <div class="vote-container">
-                                {voteData.options? votingOptions : 
-                                    <h2>No Options have been created</h2>
-                                }
-                            </div>
-                            <div class="vote-button-container">
-                                <button class="btn btn-success mt-3">Vote</button>
-                            </div>
+                            
+                            {voteData.options? 
+                                (votingOptions.length !== 0? 
+                                    <div>
+                                    <div class="vote-container">
+                                        {votingOptions} 
+                                    </div>
+                                    <div class="vote-button-container">
+                                        <button class="btn btn-success mt-3" id="voteButton" onClick={selectVote}>Vote</button>
+                                    </div>
+                                    </div>:
+                                <p class="notification-text">No Voting Option Detected</p>): 
+                                <p class="notification-text">Loading Voting Options</p>
+                            }
                         </div>
+
                         <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
                             <table class="table table-hover table-dark">
                                 <thead>
@@ -244,9 +346,10 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
                                 </tbody>
                             </table>    
                         </div>
+                        
                         <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
                             {tokenList.length == 0 ? 
-                                <h1 class="notification-text">Token Holder Not Detected</h1>:
+                                <p class="notification-text">Token Holder Not Detected</p>:
                                 <table class="table table-hover table-dark">
                                     <thead>
                                         <tr>
@@ -263,31 +366,10 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
                         
                         <div class="tab-pane fade" id="results-tab-pane" role="tabpanel" aria-labelledby="results-tab" tabindex="0">
                             <div class="result-container-parent">
-                                <div class="result-container">
-                                    <img src={cat} class="mt-2 vote-photo"/>
-                                    <div class="vote-name">
-                                        Chitler
-                                    </div>
-                                    <div class="result-percent">50%</div>
-                                </div>
-                                <div class="result-container">
-                                    <img src={cat} class="mt-2 vote-photo"/>
-                                    <div class="vote-name">
-                                        Chitler
-                                    </div>
-                                    <div class="result-percent">50%</div>
-                                </div>
-                                <div class="result-container">
-                                    <img src={cat} class="mt-2 vote-photo"/>
-                                    <div class="vote-name">
-                                        Chitler
-                                    </div>
-                                    <div class="result-percent">50%</div>
-                                </div>
+                                {result}
                             </div>
-                            <div class="result-status mx-auto mt-5">
-                                <i class="fa-solid fa-bullhorn mx-2"></i>
-                                Voting Ended. 50% of the participants voted for Chitler
+                            <div class="notification-text">
+                                {resultMessage?resultMessage: "Result Not Available Yet."}
                             </div>
                         </div>
 

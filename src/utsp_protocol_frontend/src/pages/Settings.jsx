@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import '../styles/create.css';
 import { useState } from 'react';
-import { generatePath, useLocation} from 'react-router-dom';
+import { generatePath, useLocation, useNavigate} from 'react-router-dom';
 
 export default function Settings({votingManager}){
-
+    const navigate = useNavigate();
     const { state } = useLocation();
     console.log("Updated Voting:", state);
     const { VoteID } = state || {};
@@ -31,14 +31,10 @@ export default function Settings({votingManager}){
         tokenSupply: null,
         tokenName: null,
     });
-
     
-    
-    
-    
-    function generateRandomID(){
-        return Math.floor(Math.random() * Math.pow(2, 32));
-    };
+    async function toVotingPage(){
+        navigate('/voting', {state: {VoteID}});
+    }
     
     async function updateDisplay(formData){
         try{
@@ -59,6 +55,8 @@ export default function Settings({votingManager}){
             const messageUpdate = await votingManager.updateVoteData(ID,voteTitle,voteDesc,"");
             if(messageUpdate !== "SUCCESS"){
                 alert(messageUpdate);
+            }else{
+                reduce_form('display');
             }
             displaySaveButton.removeAttribute("disabled")
         }catch(e){
@@ -93,6 +91,8 @@ export default function Settings({votingManager}){
             const message = await votingManager.updateOptionData(ID,optNames,optImgs);
             if(message !== "SUCCESS"){
                 alert(message);
+            }else{
+                reduce_form('option');
             }
             optionSaveButton.removeAttribute("disabled")
         }catch(e){
@@ -104,7 +104,6 @@ export default function Settings({votingManager}){
 
     async function updateCanister(formData){
         try{
-            console.log("Saving New Canister");
             const canisterSaveButton = document.getElementById("canisterSaveButton");
             canisterSaveButton.setAttribute("disabled", true);
 
@@ -113,9 +112,11 @@ export default function Settings({votingManager}){
                 return false;
             }
             const newCanister = formData.get('canister');
-            const message = await votingManager.updateOptionData(ID,optNames,optImgs);
+            const message = await votingManager.updateCanisterId(ID, newCanister);
             if(message !== "SUCCESS"){
                 alert(message);
+            }else{
+                reduce_form('token');
             }
             canisterSaveButton.removeAttribute("disabled")
         }catch(e){
@@ -138,6 +139,8 @@ export default function Settings({votingManager}){
             const message = await votingManager.startVote(ID);
             if(message !== "SUCCESS"){
                 alert(message);
+            }else{
+                reduce_form('status')
             }
             startVotingButton.removeAttribute("disabled")
         }catch(e){
@@ -159,6 +162,8 @@ export default function Settings({votingManager}){
             const message = await votingManager.endVote(ID);
             if(message !== "SUCCESS"){
                 alert(message);
+            }else{
+                reduce_form('status')
             }
             endVotingButton.removeAttribute("disabled");
         }catch(e){
@@ -364,6 +369,7 @@ export default function Settings({votingManager}){
                         </div>
                     </div>
                 </div>
+                <button onClick={toVotingPage}>Return</button>
             </div>
         </div>
     )

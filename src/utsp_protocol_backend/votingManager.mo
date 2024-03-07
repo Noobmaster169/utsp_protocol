@@ -87,13 +87,19 @@ actor{
             case(?voting){
                 switch(voting.status){
                     case(#Preparation){return false;}; 
-                    case(#Open)       {return false;};
-                    case(#Ended)      {
+                    case(#Ended)      {return false;};
+                    case(#Open)       {
                         let optionScores = options.get(id);
                         switch(optionScores){
                             case(null){ results.put(id, "")};
                             case(?scores){
                                 let scoresTrie: TrieMap<Nat, Nat> = TrieMap.TrieMap<Nat, Nat>(Nat.equal, Hash.hash);
+                                
+                                // Set Numbers to 0
+                                for (i in Iter.range(0, voting.optionData.size()-1)){
+                                    scoresTrie.put(i, 0);
+                                };
+                                // Count All The Selected Votes
                                 for((tokenID, option) in scores.entries()){
                                     let previousScore = scoresTrie.get(option);
                                     var currentScore  = 0;
@@ -104,14 +110,12 @@ actor{
                                     scoresTrie.put(option, currentScore+1);
                                 };
                                 var result:Text = "";
-                                for(option in scoresTrie.keys()){
-                                    switch(scoresTrie.get(option)){
-                                        case(null){
-                                            result := result#Nat.toText(0);
-                                        };
-                                        case(?score){
-                                            result := result#Nat.toText(score);
-                                        };
+                                // Count The Final Vote Count  
+                                for (i in Iter.range(0, voting.optionData.size()-1)){
+                                    let lastScore = scoresTrie.get(i);
+                                    switch(lastScore){
+                                        case(null){result := result#","#Nat.toText(0);};
+                                        case(?score){result := result#","#Nat.toText(score);};
                                     };
                                 };
                                 results.put(id, result);
@@ -148,7 +152,7 @@ actor{
         };
         let newTrie: TrieMap<Nat, Nat> = TrieMap.TrieMap<Nat, Nat>(Nat.equal, Hash.hash);
         options.put(id, newTrie);
-        results.put(id, "Not Available Yet");
+        results.put(id, "");
         votings.put(id, newVoting);
         let logStatus = await addLog(id, "Owner Created the Voting at," # Int.toText(Time.now()));
         return "SUCCESS";
@@ -395,7 +399,7 @@ actor{
         let result = results.get(id);
         switch(result){
             case(null){
-                return "Voting Doesn't Exist";
+                return "";
             };
             case(?scores){
                 return scores;

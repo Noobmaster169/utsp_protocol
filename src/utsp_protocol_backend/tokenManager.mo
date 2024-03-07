@@ -53,7 +53,15 @@ actor{
             let tokenSupply = await tokenActor.totalSupplyDip721();
             let holders = Buffer.Buffer<Text>(Nat64.toNat(tokenSupply));
             for(i in Iter.range(0,Nat64.toNat(tokenSupply) - 1)){
-                holders.add(Nat.toText(i));
+                let holder = await tokenActor.ownerOfDip721(Nat64.fromNat(i));
+                switch(holder){
+                    case(#Ok(ownerPrincipal)){
+                        holders.add(Principal.toText(ownerPrincipal));
+                    };
+                    case(#Err(ownerErr)){
+                        holders.add("Error Finding Owner");
+                    }
+                };
             };
             return Buffer.toArray(holders);  
         }

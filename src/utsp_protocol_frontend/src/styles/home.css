@@ -354,3 +354,15 @@ header {
         margin-left: 0;
     }
 }
+
+#landing-parent .region-6 button:hover {
+    background-color: #B02D99;
+}
+
+.landing-feature-container:hover{
+    background-color: rgb(224,224,224);
+}
+
+.landing-product-container:hover{
+    background-color: #f0dbf3;
+}
