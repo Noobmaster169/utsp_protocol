@@ -7,10 +7,6 @@ import votingImg from '../assets/voting.png';
 import cat from '../assets/Cat.jpg';
 import siren from '../assets/siren.png';
 import { useNavigate } from 'react-router-dom';
-//import { votingManager } from '../../../declarations/votingManager';
-//import { tokenManager } from '../../../declarations/tokenManager';
-//import {useAuth} from '../useAuth';
-
 
 export default function Voting({isAuthenticated, votingManager, tokenManager}){
     
@@ -20,7 +16,7 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
     
     const { VoteID } = state || {};
     let ID = parseInt(VoteID);
-    console.log("Exploring Vote with ID:", ID);
+    console.log("Logging Vote ID:", ID);
 
     const [voteData, setVoteData] = useState({
         canister: null,
@@ -42,18 +38,30 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
     const [tokenHolders,setTokenHolders] = useState([]);
     const [isOwner, setIsOwner] = useState(false);
     const [result, setResult] = useState([]);
-    const [resultMessage, setResultMessage] = useState("");
+    const [resultMessage, setResultMessage] = useState('');
+    const [selectedOption, setSelectedOption] = useState('');
 
     function openSettings(){
         navigate('/settings', {state: {VoteID}})
     } 
     
+    function changeOption(option){
+        setSelectedOption(option);
+    }
+    
     async function selectVote(){
-        console.log("Selecting Vote")
         const voteButton = document.getElementById("voteButton");
         voteButton.setAttribute("disabled", true);
-        try{  
-            const message = await votingManager.addVote(ID, 0);
+        
+        console.log("Selecting Vote", selectedOption);
+        console.log(selectedOption);
+        if(selectedOption===''){
+            alert("No Option Selected");
+            voteButton.removeAttribute("disabled")
+            return false;
+        };
+        try{              
+            const message = await votingManager.addVote(ID, selectedOption);
             if(message != "SUCCESS"){
                 alert(message);
             }
@@ -75,7 +83,6 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
                 console.log("Token Status: ", status)
                 if(status){
                     const token_data = status.split(",");
-                    console.log(token_data);
                     setTokenStatus({
                         tokenSupply: token_data[0],
                         tokenName: `${token_data[1]} ($${token_data[2]})`,
@@ -128,7 +135,7 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
     voteData.options ? 
     voteData.options.map((option, index) => 
         <div class="voting-option-container">
-            <input type="radio" name="pilihan" id={"pilihan-"+(index+1)}/>
+            <input type="radio" name="pilihan" id={"pilihan-"+(index+1)} onChange={() =>{changeOption(index)}} />
             <label for={"pilihan-"+(index+1)}>
                 <div class="option-label-div">
                     <img src={cat} class="mt-2 vote-photo"/>
@@ -139,7 +146,6 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
             </label>
         </div>
     ) : (<h2>No Options</h2>);
-    console.log("Voting Options:", votingOptions)
 
     useEffect(() => {
         async function getLogs(ID){
@@ -181,7 +187,7 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
             }
         }
         getHolders(voteData.canister);
-    }, [ID]);
+    });
 
     const logList = logs.map((log) => 
         <tr>
@@ -236,6 +242,10 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
                     const result_percents = result_scores.map((score)=> parseInt(parseInt(score)/total_scores*100))
                     console.log("Percents:", result_percents)
                     
+                    let highest = {
+                        name: null,
+                        percent: 0,
+                    };
                     voteData.options.forEach((option, index) => {
                         resultDisplays.push(
                             <div class="result-container">
@@ -245,9 +255,15 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
                                 </div>
                                 <div class="result-percent">{result_percents[index]}%</div>
                             </div>
-                        )
-                    })  
-                    setResultMessage("Voting Has Ended. Chitler got 50% of the votes")
+                        );
+                        if(result_percents[index] > highest.percent){
+                            highest = {
+                                name: option.title,
+                                percent: result_percents[index],
+                            };
+                        };
+                    });  
+                    setResultMessage(`Voting Has Ended. ${highest.name} got ${highest.percent}% of the votes`)
                 }
                 setResult(resultDisplays);
             }catch(e){
@@ -255,9 +271,7 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
             }
         }
         getVoteResult(ID);
-    }, [ID])
-
-    // const voteDisplay = search(ID);
+    })
     console.log(voteData);
 
     return (
@@ -300,6 +314,7 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
                         <div class="status-text mx-1">Status: {votingStatus}</div>
                     </div>
                 </div>
+
                 {isOwner ? <button onClick={openSettings}>Voting Settings</button>: ""}
                 <div class="option-bar mt-2 mb-2">
                     <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
@@ -316,6 +331,7 @@ export default function Voting({isAuthenticated, votingManager, tokenManager}){
                             <button class="nav-link tab-pane-button" id="results-tab" data-bs-toggle="tab" data-bs-target="#results-tab-pane" type="button" role="tab" aria-controls="results-tab-pane" aria-selected="false">Results</button>
                         </li>
                     </ul>
+                    
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
                             

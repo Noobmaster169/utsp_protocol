@@ -30,7 +30,6 @@ export default function Create({votingManager}){
             const voteID = parseInt(generateRandomID());
             const voteTitle = formData.get('title').toUpperCase();
             const voteDesc = formData.get('desc');
-            //const voteImg = formData.get('img');
             const voteImg = "";
 
             const message = await votingManager.createVoting(voteID);
@@ -108,41 +107,6 @@ export default function Create({votingManager}){
                 break;
         }
     }
-
-    const delete_option = (optionID) => {
-        let option_container = document.querySelector(`#option-container-${optionID}`);
-        let option_content = document.querySelector('#option-content-form');
-        option_container.style.animationPlayState = 'running';
-        option_container.addEventListener('animationend', () => {
-            option_container.remove();
-        })
-        option_content.style.maxHeight = (option_content.scrollHeight-274) + "px";
-    }
-
-    const DelButton = () => {
-        return(
-            <div class="option-container" id={"option-container-"+optCnt}>
-                <div class="option-container-header">
-                    <div class="option-title">Option {optCnt}</div>
-                    <button type='button' class="red-button" onClick={() => delete_option(optCnt)}>Delete Option</button>
-                </div>
-                <div class="form-input-container">
-                    <div class="form-input-container">
-                        <label for={"option-name-input-"+optCnt}>Name</label>
-                        <input id={"option-name-input-"+optCnt} type="text" name={'optName'+optCnt}/>
-                    </div>
-                    <div class="form-input-container">
-                        <label for={"option-image-input-"+optCnt}>Image</label>
-                        <input type="file" id={"option-image-input-"+optCnt} class="image-input" onchange="preview_image({optCnt})" name={'optImg'+optCnt}/>
-                    </div>
-                    <div class="form-input-container option-image-preview-container" id={"option-image-preview-container-"+optCnt}>
-                        <div class="image-preview-label">Image Preview</div>
-                        <div id={"option-image-preview-"+optCnt} class="image-preview-container"></div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
     
     return (
         <div>
@@ -154,7 +118,7 @@ export default function Create({votingManager}){
                     <div id="display-form" class="setting-form">
                         <div id="display-form-header" class="header-form" onClick={() => displayActive ? reduce_form('display') : extend_form('display')}>
                             <span><i class="fa-solid fa-chevron-down"></i></span>
-                            Display
+                            Voting Display
                         </div>
                         <form onSubmit={(e) => {
                             e.preventDefault();
@@ -170,16 +134,8 @@ export default function Create({votingManager}){
                                     <textarea id="display-desc-input" name='desc'></textarea>
                                 </div>
                                 <div class="form-input-container">
-                                    <label for="display-image-input">Image</label>
-                                    <input type="file" name='img' class="image-input" id="display-image-input"/>
-                                </div>
-                                <div class="form-input-container" id="image-preview-container">
-                                    <div class="image-preview-label">Image Preview</div>
-                                    <div id="display-image-preview"></div>
-                                </div>
-                                <div class="form-input-container">
                                     <div class="flex-end">
-                                        <button class="btn btn-primary" id="createButton" type='submit'>Save</button>
+                                        <button class="btn btn-primary" id="createButton" type='submit'>Create</button>
                                     </div>
                                 </div>
                             </div>

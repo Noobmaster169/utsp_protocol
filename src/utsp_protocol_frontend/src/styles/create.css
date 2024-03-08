@@ -8,13 +8,17 @@
     }
 }
 
-body {
+/*body {
     font-family: arial;
     color: white;
-    background: #DA4453;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #89216B, #DA4453);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #89216B, #DA4453); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+    background: #DA4453;  
+    background: -webkit-linear-gradient(to right, #89216B, #DA4453); 
+    background: linear-gradient(to right, #89216B, #DA4453); 
+}*/
+body{
+    background-image: url('../assets/home_bg.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
 .setting-vote-content-container {
@@ -39,7 +43,7 @@ body {
 }
 
 .header-form {
-    font-size: clamp(1.1rem, 3.5vw, 1.2rem);
+    font-size: clamp(1.2rem, 3.8vw, 1.4rem);
     font-weight: 500;
     text-align: center;
 }
@@ -48,7 +52,7 @@ body {
     background-color: white;
     padding: 5px;
     border-radius: 8px;
-    width: clamp(350px, 60vw, 900px);
+    width: clamp(350px, 60vw, 850px);
     margin-bottom: 1rem;
 }
 
@@ -62,13 +66,14 @@ body {
 .form-input-container {
     display: flex;
     flex-direction: column;
-    margin-bottom: 1rem;
-    width: 90%;
+    margin-bottom: 0.3rem;
+    width: 100%;
 }
 
 .form-input-container label, .image-preview-label {
     font-size: 1rem;
     font-weight: 600;
+    margin-top: 5px;
     margin-bottom: 3px;
 }
 
@@ -76,7 +81,7 @@ body {
     border-radius: 8px;
     background-color: #DBDCD6;
     border: none;
-    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    font-size: clamp(1.1rem, 2.5vw, 1.2rem);
     padding: 0.3rem 0.3rem 0.3rem 0.8rem;
     font-weight: 600;
     color: black;
@@ -91,6 +96,7 @@ body {
 
 .form-input-container textarea {
     height: 8rem;
+    width: 100%;
 }
 
 #display-image-preview {
@@ -105,6 +111,7 @@ body {
 .form-content {
     max-height: 0;
     overflow: hidden;
+    padding: 0px 30px;
     transition: max-height .3s ease-in-out;
     display: flex;
     align-items: center;
@@ -121,7 +128,8 @@ body {
 }
 
 .blue-button {
-    padding: 0.5rem;
+    padding: 0rem 0.75rem;
+    margin: 0rem 1rem;
     background-color: #007BFF;
     border-radius: 8px;
     color: white;
@@ -134,25 +142,26 @@ body {
 }
 
 .option-title {
-    font-size: clamp(1.3rem, 3.3vw, 1.7rem);
-    font-weight: 600;
+    font-size: 25px;
+    font-weight: 500;
     margin-right: .5rem;
 }
 
 .option-container {
     background-color: rgb(231, 231, 231);
     border-radius: 8px;
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
     margin-bottom: 1rem;
     margin: 1rem;
     animation: fade-out;
     animation-duration: .3s;
     animation-play-state: paused;
-    width: 90%;
+    width: 350px;
 }
 
 .red-button {
-    padding: 0.5rem;
+    padding: 3px 7px;
+    font-size: 12px;
     display: flex;
     justify-content: center;
     background-color: #DC3545;
@@ -168,7 +177,7 @@ body {
 
 .option-container-header {
     display: flex;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .flex-end {
@@ -198,5 +207,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.status-input{
+    display: flex;
+    justify-content: center;
+}
+
+.status-button{
+    margin: 0.125rem 0.5rem;
 }

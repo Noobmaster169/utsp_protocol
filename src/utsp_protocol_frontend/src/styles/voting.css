@@ -10,15 +10,21 @@
     }
 }
 
-body {
-    background: #DA4453;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #89216B, #DA4453);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #89216B, #DA4453); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    /*background-image: url(https://img.freepik.com/free-vector/background-with-dar-wave-concept_23-2148387248.jpg?w=740&t=st=1708312757~exp=1708313357~hmac=0d53f67dd2016314d7ebcf2cfb16768ff51991ce9a0e735df7def5f53b072ed8);*/
+/*body {
+    background: #DA4453; 
+    background: -webkit-linear-gradient(to right, #89216B, #DA4453); 
+    background: linear-gradient(to right, #89216B, #DA4453);
+}*/
+    /*background-image: url(https://img.freepik.com/free-vector/background-with-dar-wave-concept_23-2148387248.jpg?w=740&t=st=1708312757~exp=1708313357~hmac=0d53f67dd2016314d7ebcf2cfb16768ff51991ce9a0e735df7def5f53b072ed8);
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
-}
+    background-attachment: fixed;*/
+
+    body{
+        background-image: url('../assets/home_bg.jpg');
+        background-size: cover;
+        background-position: center;
+    }
 
 .page-container {
     width: 90%;
@@ -62,13 +68,13 @@ body {
 .vote-container, .result-container-parent {
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     flex-wrap: wrap;
 }
 
 .voting-option-container {
-    width: 330px;
-    height: 50vh;
+    width: 260px;
+    height: 300px;
     margin: 10px;
 }
 
@@ -90,7 +96,7 @@ body {
     color: black;
     background-color: white;
     border-radius: 8px;
-    transition: transform 1.3s ease-in-out;
+    transition: transform 0.5s ease-in-out;
 }
 
 .vote-container input {
@@ -98,8 +104,8 @@ body {
 }
 
 .vote-photo {
-    width: 250px;
-    height:250px;
+    width: 200px;
+    height:200px;
     border-radius: 16px;
 }
 
@@ -192,10 +198,12 @@ input:checked + label {
 .title-desc-div {
     padding: 20px;
     margin-top: 10vh;
-    /*background: #B24592;  /* fallback for old browsers */
-    /*background: -webkit-linear-gradient(to right, #F15F79, #B24592);  /* Chrome 10-25, Safari 5.1-6 */
-    /*background: linear-gradient(to right, #F15F79, #B24592); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background-color: rgb(233, 233, 233);
+    
+    background: #B24592;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #F15F79, #B24592);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #F15F79, #B24592); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+    /*background-color: rgb(233, 233, 233);*/
     border-radius: 8px;
     width: 80vw;
     color: black;
@@ -235,7 +243,7 @@ input:checked + label {
 .result-container {
     background-color: white;
     padding: 10px;
-    width: 330px;
+    width: 260px;
     border-radius: 16px;
     display: flex;
     flex-direction: column;

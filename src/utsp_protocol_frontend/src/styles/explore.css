@@ -1,15 +1,20 @@
 
 
 
-body {
-    background: #DA4453;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #89216B, #DA4453);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #89216B, #DA4453); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    /*background-image: url(https://img.freepik.com/free-vector/background-with-dar-wave-concept_23-2148387248.jpg?w=740&t=st=1708312757~exp=1708313357~hmac=0d53f67dd2016314d7ebcf2cfb16768ff51991ce9a0e735df7def5f53b072ed8);*/
+/*body {
+    background: #DA4453; 
+    background: -webkit-linear-gradient(to right, #89216B, #DA4453); 
+    background: linear-gradient(to right, #89216B, #DA4453);
+}*/
+    /*background-image: url(https://img.freepik.com/free-vector/background-with-dar-wave-concept_23-2148387248.jpg?w=740&t=st=1708312757~exp=1708313357~hmac=0d53f67dd2016314d7ebcf2cfb16768ff51991ce9a0e735df7def5f53b072ed8);
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
-}
+    background-attachment: fixed;*/
+    body{
+        background-image: url('../assets/home_bg.jpg');
+        background-size: cover;
+        background-position: center;
+    }
 
 @media (max-width: 999px) {
     .navbar-nav {
@@ -49,7 +54,7 @@ body {
 .voting-container {
     height: 300px;
     width: 260px;
-    background-color: rgb(231, 231, 231);
+    background-color: rgb(241, 241, 241);
     border-radius: 16px;
     display: flex;
     flex-direction: column;
@@ -66,7 +71,7 @@ body {
 }
 
 .voting-container:hover{
-    background-color: rgba(200, 200, 200);
+    background-color: rgba(220, 220, 220);
 }
 
 .explore-content-container {

@@ -32,6 +32,13 @@ export default function Settings({votingManager}){
         tokenName: null,
     });
     
+    useEffect(()=>{
+        extend_form('display');
+        extend_form('option');
+        extend_form('token');
+        extend_form('status');
+    }, [])
+
     async function toVotingPage(){
         navigate('/voting', {state: {VoteID}});
     }
@@ -49,7 +56,6 @@ export default function Settings({votingManager}){
             
             const voteTitle = formData.get('title').toUpperCase();
             const voteDesc = formData.get('desc');
-            const voteImg = formData.get('img');
             console.log(ID,voteTitle,voteDesc,"");    
 
             const messageUpdate = await votingManager.updateVoteData(ID,voteTitle,voteDesc,"");
@@ -134,6 +140,7 @@ export default function Settings({votingManager}){
 
             if(!ID){
                 alert("No Voting Detected");
+                startVotingButton.removeAttribute("disabled")
                 return false;
             }
             const message = await votingManager.startVote(ID);
@@ -157,6 +164,7 @@ export default function Settings({votingManager}){
 
             if(!ID){
                 alert("No Voting Detected");
+                endVotingButton.removeAttribute("disabled");
                 return false;
             }
             const message = await votingManager.endVote(ID);
@@ -234,7 +242,7 @@ export default function Settings({votingManager}){
         option_container.addEventListener('animationend', () => {
             option_container.remove();
         })
-        option_content.style.maxHeight = (option_content.scrollHeight-274) + "px";
+        option_content.style.maxHeight = (option_content.scrollHeight) + "px";
     }
 
     const DelButton = () => {
@@ -242,22 +250,14 @@ export default function Settings({votingManager}){
             <div class="option-container" id={"option-container-"+optCnt}>
                 <div class="option-container-header">
                     <div class="option-title">Option {optCnt}</div>
-                    <button type='button' class="red-button" onClick={() => delete_option(optCnt)}>Delete Option</button>
                 </div>
                 <div class="form-input-container">
                     <div class="form-input-container">
                         <label for={"option-name-input-"+optCnt}>Name</label>
                         <input id={"option-name-input-"+optCnt} type="text" name={'optName'+optCnt}/>
                     </div>
-                    <div class="form-input-container">
-                        <label for={"option-image-input-"+optCnt}>Image</label>
-                        <input type="file" id={"option-image-input-"+optCnt} class="image-input" onchange="preview_image({optCnt})" name={'optImg'+optCnt}/>
-                    </div>
-                    <div class="form-input-container option-image-preview-container" id={"option-image-preview-container-"+optCnt}>
-                        <div class="image-preview-label">Image Preview</div>
-                        <div id={"option-image-preview-"+optCnt} class="image-preview-container"></div>
-                    </div>
                 </div>
+                <button type='button' class="red-button" onClick={() => delete_option(optCnt)}>Delete Option</button>
             </div>
         );
     }
@@ -267,7 +267,7 @@ export default function Settings({votingManager}){
         let option_content = document.querySelector('#option-content-form');
         setOptCnt(optCnt+1);
         setOptionList(optionList.concat(<DelButton/>));
-        option_content.style.maxHeight = (option_content.scrollHeight+274) + "px";
+        option_content.style.maxHeight = (option_content.scrollHeight+200) + "px";
     }
     
     return (
@@ -296,14 +296,6 @@ export default function Settings({votingManager}){
                                     <textarea id="display-desc-input" name='desc'></textarea>
                                 </div>
                                 <div class="form-input-container">
-                                    <label for="display-image-input">Image</label>
-                                    <input type="file" name='img' class="image-input" id="display-image-input"/>
-                                </div>
-                                <div class="form-input-container" id="image-preview-container">
-                                    <div class="image-preview-label">Image Preview</div>
-                                    <div id="display-image-preview"></div>
-                                </div>
-                                <div class="form-input-container">
                                     <div class="flex-end">
                                         <button id="displaySaveButton" class="btn btn-primary" type='submit'>Save</button>
                                     </div>
@@ -325,9 +317,9 @@ export default function Settings({votingManager}){
                                 <div id="option-parent-container">
                                     {optionList}
                                 </div>
-                                <button type='button' class="btn btn-primary" onClick={() => add_option()}>Add Option</button>
                                 <div class="form-input-container">
                                     <div class="flex-end">
+                                        <button type='button' class="btn btn-primary" onClick={() => add_option()}>Add Option</button>
                                         <button id="optionSaveButton" class="blue-button" type='submit'>Save</button>
                                     </div>
                                 </div>
@@ -364,12 +356,17 @@ export default function Settings({votingManager}){
                             Update Voting Status
                         </div>
                         <div id="status-content-form" class="form-content">
-                            <button id="startVotingButton" onClick={startVoting}>Start Voting</button>
-                            <button id="endVotingButton"   onClick={endVoting}  >End Voting</button>
+                            <div class="status-input">
+                                <button id="startVotingButton" onClick={startVoting}  class="btn btn-primary status-button">Start Voting</button>
+                                <button id="endVotingButton"   onClick={endVoting}   class="btn btn-primary status-button">End Voting</button>
+                            </div>
                         </div>
                     </div>
+                    <div>
+                        <button onClick={toVotingPage}  class="btn btn-primary">Return</button>
+                    </div>
+                    
                 </div>
-                <button onClick={toVotingPage}>Return</button>
             </div>
         </div>
     )
